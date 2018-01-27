@@ -2,4 +2,4 @@
 
 Starting point. Based on a visualization library demo (Rickshaw) application to build our Hackathon prototype
 
-examples/hackathon.html
+hackathon.html
