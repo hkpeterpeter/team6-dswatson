@@ -6,15 +6,56 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
+//d3.select("body").transition()
+  //  .style("background-color", "black");
+
 var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 
 
-let points = d3.range(1, 10).map(function(i) {
+/*let points = d3.range(1, 10).map(function(i) {
     return [i * width / 10, 50 + Math.random() * (height - 100)];
 });
+*/
+
+let points = [
+	[0,100],
+	[1,200],
+	[2,500],
+	[3,300]
+];
+
+
+/*function mapToY(points, x) {
+
+	for (var i=0; i<points.length; i++) {
+		if ( points[i][0] > x ) {
+
+			var x0 = points[i-1][0];
+			var y0 = points[i-1][1];
+			var x1 = points[i][0];
+			var y1 = points[i][1];
+
+			var y = y0 + (x-x0)*(y1-y0)/(x1-x0);
+
+			//var rangeY = point[i][1] - point[i-1][1];
+			//var rangeX = point[i][0] - point[i-1][0];
+			//var dx1 = inputX - point[i-1][0];
+			//var dx2 = point[i][0] - inputX;
+
+			console.log(" i: " + i + " x: " + x + " y: " +  y);
+			return y;
+
+
+
+		}
+	}
+	return -1;
+}
+*/
+
 var x = d3.scaleLinear()
     .rangeRound([0, width]);
 
@@ -57,8 +98,17 @@ focus.append("path")
     .attr("stroke-width", 1.5)
     .attr("d", line);
 
+/*focus.append("path")
+	.datum([points[0], points[3]])
+	.attr("fill", "none")
+	.attr("stroke", "steelblue")
+	.attr("stroke-linejoin", "round")
+	.attr("stroke-linecap", "round")
+	.attr("stroke-width", 1.5)
+	.attr("d", line);*/
+
 focus.selectAll('circle')
-    .data(points)
+    .data([points[2]])
     .enter()
     .append('circle')
     .attr('r', 5.0)
@@ -67,8 +117,9 @@ focus.selectAll('circle')
     .style('cursor', 'pointer')
     .style('fill', 'steelblue');
 
-focus.selectAll('circle')
-        .call(drag);
+focus.selectAll('circle').call(drag);
+
+
 
 focus.append('g')
     .attr('class', 'axis axis--x')
@@ -85,7 +136,10 @@ function dragstarted(d) {
 
 function dragged(d) {
     d[0] = x.invert(d3.event.x);
-    d[1] = y.invert(d3.event.y);
+  	d[1] = y.invert(d3.event.y);
+		//d[1] = mapToY(points, d[0]);
+
+
     d3.select(this)
         .attr('cx', x(d[0]))
         .attr('cy', y(d[1]))
