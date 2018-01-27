@@ -27,34 +27,36 @@ let points = [
 	[3,300]
 ];
 
+let point = [0.5, 150];
+let point2 = [2, 500];
 
-/*function mapToY(points, x) {
 
+function mapToY(points, xx) {
+
+  var yy = -1;
 	for (var i=0; i<points.length; i++) {
-		if ( points[i][0] > x ) {
+		if ( points[i][0] > xx ) {
 
 			var x0 = points[i-1][0];
 			var y0 = points[i-1][1];
 			var x1 = points[i][0];
 			var y1 = points[i][1];
 
-			var y = y0 + (x-x0)*(y1-y0)/(x1-x0);
+			var yy = y0 + (xx-x0)*(y1-y0)/(x1-x0);
 
 			//var rangeY = point[i][1] - point[i-1][1];
 			//var rangeX = point[i][0] - point[i-1][0];
 			//var dx1 = inputX - point[i-1][0];
 			//var dx2 = point[i][0] - inputX;
 
-			console.log(" i: " + i + " x: " + x + " y: " +  y);
-			return y;
-
-
+			console.log(" i: " + i + " x: " + xx + " y: " +  yy);
+			break;
 
 		}
 	}
-	return -1;
+	return yy;
 }
-*/
+
 
 var x = d3.scaleLinear()
     .rangeRound([0, width]);
@@ -108,7 +110,7 @@ focus.append("path")
 	.attr("d", line);*/
 
 focus.selectAll('circle')
-    .data([points[2]])
+    .data([point, point2])
     .enter()
     .append('circle')
     .attr('r', 5.0)
@@ -136,8 +138,8 @@ function dragstarted(d) {
 
 function dragged(d) {
     d[0] = x.invert(d3.event.x);
-  	d[1] = y.invert(d3.event.y);
-		//d[1] = mapToY(points, d[0]);
+  	//d[1] = y.invert(d3.event.y);
+		d[1] = mapToY(points, d[0]);
 
 
     d3.select(this)
