@@ -27,6 +27,7 @@ let points = [
 	[3,300]
 ];
 
+// Movable points
 let point = [0.5, 150];
 let point2 = [2, 500];
 
@@ -109,6 +110,39 @@ focus.append("path")
 	.attr("stroke-width", 1.5)
 	.attr("d", line);*/
 
+  // Point 1: control line 1
+	focus.append("path")
+			.datum( [  [0, point[1]], point ] )
+			.attr("id","controlLineY")
+			.attr("fill", "none")
+			.attr("stroke", "red")
+			.attr("stroke-linejoin", "round")
+			.attr("stroke-linecap", "round")
+			.attr("stroke-width", 1.5)
+			.attr("stroke-dasharray", "5,5")
+			.attr("d", line);
+
+  // Point 1: control line 2
+	focus.append("path")
+					.datum( [  [point[0], 0] , point ] )
+					.attr("id","controlLineX")
+					.attr("fill", "none")
+					.attr("stroke", "red")
+					.attr("stroke-linejoin", "round")
+					.attr("stroke-linecap", "round")
+					.attr("stroke-width", 1.5)
+					.attr("stroke-dasharray", "5,5")
+					.attr("d", line);
+
+
+
+
+
+
+
+
+
+// Movable circles
 focus.selectAll('circle')
     .data([point, point2])
     .enter()
@@ -118,8 +152,8 @@ focus.selectAll('circle')
     .attr('cy', function(d) { return y(d[1]); })
     .style('cursor', 'pointer')
     .style('fill', 'steelblue');
-
 focus.selectAll('circle').call(drag);
+
 
 
 
@@ -146,6 +180,33 @@ function dragged(d) {
         .attr('cx', x(d[0]))
         .attr('cy', y(d[1]))
     focus.select('path').attr('d', line);
+
+
+		focus.select('path#controlLineY').remove();
+		focus.append("path")
+				.datum( [  [0, point[1]], point ] )
+				.attr("id","controlLineY")
+				.attr("fill", "none")
+				.attr("stroke", "red")
+				.attr("stroke-linejoin", "round")
+				.attr("stroke-linecap", "round")
+				.attr("stroke-width", 1.5)
+				.attr("stroke-dasharray", "5,5")
+				.attr("d", line);
+
+focus.select('path#controlLineX').remove();
+				focus.append("path")
+								.datum( [  [point[0], 0] , point ] )
+								.attr("id","controlLineX")
+								.attr("fill", "none")
+								.attr("stroke", "red")
+								.attr("stroke-linejoin", "round")
+								.attr("stroke-linecap", "round")
+								.attr("stroke-width", 1.5)
+								.attr("stroke-dasharray", "5,5")
+								.attr("d", line);
+
+
 }
 
 function dragended(d) {
