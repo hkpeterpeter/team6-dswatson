@@ -28,8 +28,9 @@ let points = [
 ];
 
 // Movable points
-let point = [0.5, 150];
+let point = [2.5, 400];
 let point2 = [2, 500];
+let point3 = [3, 300];
 
 
 function mapToY(points, xx) {
@@ -144,7 +145,7 @@ focus.append("path")
 
 // Movable circles
 focus.selectAll('circle')
-    .data([point, point2])
+    .data([point, point2, point3])
     .enter()
     .append('circle')
     .attr('r', 5.0)
