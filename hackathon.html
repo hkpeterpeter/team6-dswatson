@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <!-- https://stackoverflow.com/questions/42720488/d3-v4-drag-line-chart-with-x-and-y-axes -->
 <!-- Thanks to Mark - https://stackoverflow.com/users/16363/mark -->
+
+<img src="price_elastic.png" style="width:700px;" />
+<h3>Demand Curve in Oct: Profit(x-axis) / Quantity(y-axis)</h3>
 <svg width="500" height="350"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -25,6 +28,8 @@ let points = [
 	[1,200],
 	[2,500],
 	[3,300]
+	,[4,600]
+	,[5,200]
 ];
 
 // Movable points
@@ -123,6 +128,34 @@ focus.append("path")
 			.attr("stroke-dasharray", "5,5")
 			.attr("d", line);
 
+// Test: Add a text label
+/*
+focus.append("text")
+    .data( [  [0, point[1]], point ] )
+    .attr("id","controlTextLineY")
+.attr("x", function(d) { return d.cx; })
+                 .attr("y", function(d) { return d.cy; })
+                 .text( function (d) { return "( " + d.cx + ", " + d.cy +" )"; })
+                 .attr("font-family", "sans-serif")
+                 .attr("font-size", "20px")
+                 .attr("fill", "red");*/
+
+
+
+// Point 1: Extended control line 1
+      focus.append("path")
+    			.datum( [  [0, point[1]*0.95], [point[0], point[1]*0.95] ] )
+    			.attr("id","controlExtendedLineY")
+    			.attr("fill", "none")
+    			.attr("stroke", "red")
+    			.attr("stroke-linejoin", "round")
+    			.attr("stroke-linecap", "round")
+    			.attr("stroke-width", 1.5)
+    			.attr("stroke-dasharray", "5,5")
+    			.attr("d", line);
+
+
+
   // Point 1: control line 2
 	focus.append("path")
 					.datum( [  [point[0], 0] , point ] )
@@ -136,6 +169,56 @@ focus.append("path")
 					.attr("d", line);
 
 
+
+
+
+  // Point 2: control line 1
+  focus.append("path")
+        	.datum( [  [0, point2[1]], point2 ] )
+        	.attr("id","control2LineY")
+        	.attr("fill", "none")
+        	.attr("stroke", "green")
+        	.attr("stroke-linejoin", "round")
+        	.attr("stroke-linecap", "round")
+        	.attr("stroke-width", 1.5)
+        	.attr("stroke-dasharray", "5,15")
+        	.attr("d", line);
+
+   // Point 2: control line 2
+  focus.append("path")
+        					.datum( [  [point2[0], 0] , point2 ] )
+        					.attr("id","control2LineX")
+        					.attr("fill", "none")
+        					.attr("stroke", "green")
+        					.attr("stroke-linejoin", "round")
+        					.attr("stroke-linecap", "round")
+        					.attr("stroke-width", 1.5)
+        					.attr("stroke-dasharray", "5,15")
+        					.attr("d", line);
+
+  // Point 2: control line 1
+  focus.append("path")
+          .datum( [  [0, point3[1]], point3 ] )
+          .attr("id","control3LineY")
+          .attr("fill", "none")
+                        	.attr("stroke", "purple")
+                        	.attr("stroke-linejoin", "round")
+                        	.attr("stroke-linecap", "round")
+                        	.attr("stroke-width", 1.5)
+                        	.attr("stroke-dasharray", "5,15")
+                        	.attr("d", line);
+
+  // Point 2: control line 2
+                  focus.append("path")
+                        					.datum( [  [point3[0], 0] , point3 ] )
+                        					.attr("id","control3LineX")
+                        					.attr("fill", "none")
+                        					.attr("stroke", "purple")
+                        					.attr("stroke-linejoin", "round")
+                        					.attr("stroke-linecap", "round")
+                        					.attr("stroke-width", 1.5)
+                        					.attr("stroke-dasharray", "5,15")
+                        					.attr("d", line);
 
 
 
@@ -154,6 +237,9 @@ focus.selectAll('circle')
     .style('cursor', 'pointer')
     .style('fill', 'steelblue');
 focus.selectAll('circle').call(drag);
+
+
+
 
 
 
@@ -206,6 +292,20 @@ focus.select('path#controlLineX').remove();
 								.attr("stroke-width", 1.5)
 								.attr("stroke-dasharray", "5,5")
 								.attr("d", line);
+
+
+                // Point 1: Extended control line 1
+                focus.select('path#controlExtendedLineY').remove();
+                      focus.append("path")
+                    			.datum( [  [0, point[1]*0.95], [point[0], point[1]*0.95] ] )
+                    			.attr("id","controlExtendedLineY")
+                    			.attr("fill", "none")
+                    			.attr("stroke", "red")
+                    			.attr("stroke-linejoin", "round")
+                    			.attr("stroke-linecap", "round")
+                    			.attr("stroke-width", 1.5)
+                    			.attr("stroke-dasharray", "5,5")
+                    			.attr("d", line);
 
 
 }
