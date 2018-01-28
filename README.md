@@ -7,4 +7,4 @@ prepare the data, we will integrate it with this front-end interface. (hackathon
 
 Screenshot:
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot.gif)
