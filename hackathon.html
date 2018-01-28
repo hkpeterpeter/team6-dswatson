@@ -3,11 +3,46 @@
 <!-- https://stackoverflow.com/questions/42720488/d3-v4-drag-line-chart-with-x-and-y-axes -->
 <!-- Thanks to Mark - https://stackoverflow.com/users/16363/mark -->
 
-<img src="price_elastic.png" style="width:700px;" />
-<h3>Demand Curve in Oct: Profit(x-axis) / Quantity(y-axis)</h3>
-<svg width="500" height="350"></svg>
+<img id="upImg" src="price_elastic.png" style="width:700px;" />
+
+<table id="bottomVis">
+  <tr>
+    <td>
+  <h3>Demand Curve: Quantity(x-axis)  |  Profit(y-axis) </h3>
+</td>
+</tr>
+  <tr>
+    <td>
+
+          <svg width="500" height="350"></svg>
+
+    </td>
+    <td>
+      <h3>Current:</h3>
+      <h4 style="color:red;" id="labelQCurrent">Q:</h4>
+      <h4 style="color:red;" id="labelPCurrent">P:</h4>
+
+
+      <h3>Optimal:</h3>
+      <h4 style="color:green;" id="labelQOptimal">Q:</h4>
+      <h4 style="color:green;" id="labelPOptimal">P:</h4>
+
+      <h3>Target:</h3>
+      <h4 style="color:purple;" id="labelQTarget">Q:</h4>
+      <h4 style="color:purple;" id="labelPTarget">P:</h4>
+
+
+    </td>
+  </tr>
+</table>
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
+
+$("#bottomVis").hide();
+$("#upImg").on("click", function(){
+  $("#bottomVis").show();
+});
 
 //d3.select("body").transition()
   //  .style("background-color", "black");
@@ -128,17 +163,17 @@ focus.append("path")
 			.attr("stroke-dasharray", "5,5")
 			.attr("d", line);
 
-// Test: Add a text label
-/*
-focus.append("text")
-    .data( [  [0, point[1]], point ] )
-    .attr("id","controlTextLineY")
-.attr("x", function(d) { return d.cx; })
-                 .attr("y", function(d) { return d.cy; })
-                 .text( function (d) { return "( " + d.cx + ", " + d.cy +" )"; })
-                 .attr("font-family", "sans-serif")
-                 .attr("font-size", "20px")
-                 .attr("fill", "red");*/
+
+// text labels
+    $("#labelPCurrent").text("P: " + parseFloat(point[1]).toFixed(2) + "");
+    $("#labelQCurrent").text("Q: " + parseFloat(point[0]).toFixed(2) + "");
+
+
+    $("#labelPOptimal").text("P: " + parseFloat(point2[1]).toFixed(2) + "");
+    $("#labelQOptimal").text("Q: " + parseFloat(point2[0]).toFixed(2) + "");
+
+    $("#labelPTarget").text("P: " + parseFloat(point3[1]).toFixed(2) + "");
+    $("#labelQTarget").text("Q: " + parseFloat(point3[0]).toFixed(2) + "");
 
 
 
@@ -267,6 +302,11 @@ function dragged(d) {
         .attr('cx', x(d[0]))
         .attr('cy', y(d[1]))
     focus.select('path').attr('d', line);
+
+
+    // update labels
+    $("#labelPCurrent").text("P: " + parseFloat(d[1]).toFixed(2) + "");
+    $("#labelQCurrent").text("Q: " + parseFloat(d[0]).toFixed(2) + "");
 
 
 		focus.select('path#controlLineY').remove();
