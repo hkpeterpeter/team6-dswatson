@@ -3,7 +3,7 @@
 <!-- https://stackoverflow.com/questions/42720488/d3-v4-drag-line-chart-with-x-and-y-axes -->
 <!-- Thanks to Mark - https://stackoverflow.com/users/16363/mark -->
 
-<img id="upImg" src="price_elastic.png" style="width:700px;" />
+<!-- <img id="upImg" src="price_elastic.png" style="width:700px;" /> -->
 
 <table id="bottomVis">
   <tr>
@@ -23,7 +23,12 @@
         <span id="labelGrossMargin">&nbsp;</span>
         <button id="btnGrossMarginIncrease">-</button>
         <button id="btnGrossMarginDecrease">+</button>
+        <br>
+
+        Supplier Revenue:
+        <span id="labelSupplyRevenue">&nbsp;</span>
       </h4>
+
       <h3>Target:</h3>
       <h4>
         <span style="color:red;" id="labelPCurrent">P:</span>
@@ -57,7 +62,7 @@
 <script src="jquery-3.3.1.min.js"></script>
 <script>
 
-$("#bottomVis").hide();
+// $("#bottomVis").hide();
 $("#upImg").on("click", function(){
   $("#bottomVis").show();
 });
@@ -76,14 +81,26 @@ var svg = d3.select("svg"),
 });
 */
 
+let minGrossMargin = 0.8;
+let grossMargin = 0.95;
+let maxGrossMargin = 1.0;
+
 
 function revenue(p,q) {
   return p*q;
 }
 
-function profit( p, q) {
+function profit(p, q) {
   let cost = 71.0438343;
   return (p-cost)*q;
+}
+
+
+
+function supplyRevenue(c1, q1) {
+  let c0 = 71.0438343;
+  console.log(q1);
+  return (c1-c0)*(q1);
 }
 
 
@@ -91,15 +108,14 @@ function mapMarginToText(m) {
    return "" + parseInt( (1.0 - m)*100 ) + "%";
 }
 
-let minGrossMargin = 0.8;
-let grossMargin = 0.95;
-let maxGrossMargin = 1.0;
+
 
 //$("#labelGrossMargin").text(""+parseFloat(grossMargin).toFixed(2));
 
 $("#labelGrossMargin").text(mapMarginToText(grossMargin));
 
 $("#btnGrossMarginIncrease").on("click", function(){
+
 
   if ( grossMargin < maxGrossMargin ) {
       grossMargin += 0.01;
@@ -118,6 +134,10 @@ $("#btnGrossMarginIncrease").on("click", function(){
                 .attr("stroke-width", 1.5)
                 .attr("stroke-dasharray", "5,5")
                 .attr("d", line);
+
+                // update the supplier revenue
+                 $("#labelSupplyRevenue").text(parseFloat( supplyRevenue(point[1]*grossMargin, point[0])).toFixed(2) + "");
+
   }
 
 });
@@ -141,6 +161,11 @@ $("#btnGrossMarginDecrease").on("click", function(){
                 .attr("stroke-width", 1.5)
                 .attr("stroke-dasharray", "5,5")
                 .attr("d", line);
+
+
+                // update the supplier revenue
+                 $("#labelSupplyRevenue").text(parseFloat( supplyRevenue(point[1]*grossMargin, point[0])).toFixed(2) + "");
+
   }
 
 });
@@ -487,6 +512,9 @@ focus.append("path")
     $("#labelRCurrent").text("R: " + parseFloat( revenue(point[1],point[0]) ).toFixed(2) + "");
     $("#labelProfitCurrent").text("Profit: " + parseFloat( profit(point[1],point[0]) ).toFixed(2) + "");
 
+   // update the supplier revenue
+    $("#labelSupplyRevenue").text(parseFloat( supplyRevenue(point[1]*grossMargin, point[0])).toFixed(2) + "");
+
 
     $("#labelPOptimal").text("P: " + parseFloat(point2[1]).toFixed(2) + "");
     $("#labelQOptimal").text("Q: " + parseFloat(point2[0]).toFixed(2) + "");
@@ -634,6 +662,11 @@ function dragged(d) {
     $("#labelQCurrent").text("Q: " + parseFloat(d[0]).toFixed(2) + "");
     $("#labelRCurrent").text("R: " + parseFloat( revenue(d[1],d[0]) ).toFixed(2) + "");
     $("#labelProfitCurrent").text("Profit: " + parseFloat( profit(d[1],d[0]) ).toFixed(2) + "");
+
+
+    // update the supplier revenue
+     $("#labelSupplyRevenue").text(parseFloat( supplyRevenue(d[1]*grossMargin, d[0])).toFixed(2) + "");
+
 
 
 		focus.select('path#controlLineY').remove();
