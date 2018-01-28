@@ -18,20 +18,30 @@
 
     </td>
     <td>
+      <h4 style="border: 1px solid; padding:20px;">
+        Gross margin:
+        <span id="labelGrossMargin">&nbsp;</span>
+        <button id="btnGrossMarginIncrease">-</button>
+        <button id="btnGrossMarginDecrease">+</button>
+      </h4>
       <h3>Current:</h3>
-      <h4 style="color:red;" id="labelQCurrent">Q:</h4>
-      <h4 style="color:red;" id="labelPCurrent">P:</h4>
+      <h4>
+        <span style="color:red;" id="labelPCurrent">P:</span>
+        <span style="color:red;" id="labelQCurrent">Q:</span>
 
-
+      </h4>
       <h3>Optimal:</h3>
-      <h4 style="color:green;" id="labelQOptimal">Q:</h4>
-      <h4 style="color:green;" id="labelPOptimal">P:</h4>
+      <h4>
+        <span style="color:green;" id="labelPOptimal">P:</span>
+        <span style="color:green;" id="labelQOptimal">Q:</span>
 
+      </h4>
       <h3>Target:</h3>
-      <h4 style="color:purple;" id="labelQTarget">Q:</h4>
-      <h4 style="color:purple;" id="labelPTarget">P:</h4>
+      <h4>
+        <span style="color:purple;" id="labelPTarget">P:</span>
+        <span style="color:purple;" id="labelQTarget">Q:</span>
 
-
+      </h4>
     </td>
   </tr>
 </table>
@@ -57,6 +67,66 @@ var svg = d3.select("svg"),
     return [i * width / 10, 50 + Math.random() * (height - 100)];
 });
 */
+
+
+function mapMarginToText(m) {
+   return "" + parseInt( (1.0 - m)*100 ) + "%";
+}
+
+let minGrossMargin = 0.8;
+let grossMargin = 0.95;
+let maxGrossMargin = 1.0;
+
+//$("#labelGrossMargin").text(""+parseFloat(grossMargin).toFixed(2));
+
+$("#labelGrossMargin").text(mapMarginToText(grossMargin));
+
+$("#btnGrossMarginIncrease").on("click", function(){
+
+  if ( grossMargin < maxGrossMargin ) {
+      grossMargin += 0.01;
+      // $("#labelGrossMargin").text(""+parseFloat(grossMargin).toFixed(2));
+      $("#labelGrossMargin").text(mapMarginToText(grossMargin));
+
+      // Point 1: Extended control line 1
+      focus.select('path#controlExtendedLineY').remove();
+            focus.append("path")
+                .datum( [  [minX, point[1]*grossMargin], [point[0], point[1]*grossMargin] ] )
+                .attr("id","controlExtendedLineY")
+                .attr("fill", "none")
+                .attr("stroke", "red")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("stroke-dasharray", "5,5")
+                .attr("d", line);
+  }
+
+});
+
+$("#btnGrossMarginDecrease").on("click", function(){
+
+  if ( grossMargin > minGrossMargin ) {
+      grossMargin -= 0.01;
+      //$("#labelGrossMargin").text(""+parseFloat(grossMargin).toFixed(2));
+      $("#labelGrossMargin").text(mapMarginToText(grossMargin));
+
+      // Point 1: Extended control line 1
+      focus.select('path#controlExtendedLineY').remove();
+            focus.append("path")
+                .datum( [  [minX, point[1]*grossMargin], [point[0], point[1]*grossMargin] ] )
+                .attr("id","controlExtendedLineY")
+                .attr("fill", "none")
+                .attr("stroke", "red")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("stroke-dasharray", "5,5")
+                .attr("d", line);
+  }
+
+});
+
 
 
 
@@ -320,7 +390,7 @@ focus.append("path")
 
 // Point 1: Extended control line 1
       focus.append("path")
-    			.datum( [  [minX, point[1]*0.95], [point[0], point[1]*0.95] ] )
+    			.datum( [  [minX, point[1]*grossMargin], [point[0], point[1]*grossMargin] ] )
     			.attr("id","controlExtendedLineY")
     			.attr("fill", "none")
     			.attr("stroke", "red")
@@ -478,7 +548,7 @@ focus.select('path#controlLineX').remove();
                 // Point 1: Extended control line 1
                 focus.select('path#controlExtendedLineY').remove();
                       focus.append("path")
-                    			.datum( [  [minX, point[1]*0.95], [point[0], point[1]*0.95] ] )
+                    			.datum( [  [minX, point[1]*grossMargin], [point[0], point[1]*grossMargin] ] )
                     			.attr("id","controlExtendedLineY")
                     			.attr("fill", "none")
                     			.attr("stroke", "red")
