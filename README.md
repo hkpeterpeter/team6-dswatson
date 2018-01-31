@@ -1,9 +1,8 @@
 # Team 6 - DS Watson
 
-Starting point.
+The client front-end code is mainly packaged in "hackathon.html". We developed this front-end after 2 data scientists and a business user investigated the dataset, explored the interest patterns, and trainned up a model. 
 
-We would like to build a front-end interactive 2D visualization demo. After the data scientists
-prepare the data, we will integrate it with this front-end interface. (hackathon.html)
+The local server demo source codes are packaged inside the "server-demo" folder
 
 Screenshot:
 
